@@ -16,11 +16,11 @@ class OpdsClient(InterfaceActionBase):
     """
 
     name = "OPDS Client"
-    description = "Import from the OPDS catalog exported by a different calibre"
+    description = "Browse and download books from OPDS catalogs into calibre"
     supported_platforms = ["windows", "osx", "linux"]
-    author = "Steinar Bang"
-    version = (1, 0, 0)
-    minimum_calibre_version = (2, 35, 0)
+    author = "Steinar Bang and contributors"
+    version = (1, 1, 0)
+    minimum_calibre_version = (6, 0, 0)
 
     actual_plugin = "calibre_plugins.opds_client.ui:OpdsInterfacePlugin"
 

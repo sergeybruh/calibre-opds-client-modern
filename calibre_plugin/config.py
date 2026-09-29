@@ -5,7 +5,7 @@ __copyright__ = "Steinar Bang, 2015"
 __credits__ = ["Steinar Bang"]
 __license__ = "GPL v3"
 
-from PyQt5.Qt import QCheckBox, QComboBox, QGridLayout, QLabel, QWidget
+from qt.core import QCheckBox, QComboBox, QGridLayout, QLabel, QWidget
 
 from calibre.utils.config import JSONConfig
 

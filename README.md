@@ -1,115 +1,110 @@
-# Calibre OPDS Client
+# Calibre OPDS Client for Python 3 and Qt 6
 
-[![build](https://github.com/goodlibs/calibre-opds-client/workflows/build/badge.svg)](https://github.com/goodlibs/calibre-opds-client/actions?query=workflow%3Abuild)  [![Code Style: Black](https://img.shields.io/badge/code_style-black-000000.svg)](https://github.com/python/black)
+A maintained Calibre plugin for browsing OPDS catalogs and downloading ebooks directly into a Calibre library.
 
-Download books from an OPDS catalog using a Calibre plugin.
+This project modernizes the original **Calibre OPDS Client** for current Calibre releases. It replaces obsolete Python 2 networking APIs and updates the user interface for Calibre's Qt 6 runtime.
 
-## :books: Background
+## Features
 
-[Calibre](https://calibre-ebook.com) is a cross-platform open-source suite of e-book software.
-Calibre supports organizing existing e-books into virtual libraries, displaying, editing, creating and converting e-books, as well as syncing e-books with a variety of e-readers.
+- Add and remember custom OPDS catalog URLs.
+- Browse OPDS 1.x navigation and acquisition feeds.
+- Search and filter catalog results.
+- Download selected ebooks into the current Calibre library.
+- Hide newspapers or books already present in the library.
+- Connect to Calibre Content Server, Calibre-Web, Project Gutenberg, and other compatible OPDS services.
+- Run on macOS, Windows, and Linux with Calibre 6 or newer.
 
-The [Open Publication Distribution System](https://en.wikipedia.org/wiki/Open_Publication_Distribution_System) (OPDS) catalog format is a syndication format for electronic publications based on Atom and HTTP.
-OPDS catalogs enable the aggregation, distribution, discovery, and acquisition of electronic publications.
+Use the plugin only with catalogs and publications you are authorized to access.
 
-The **Calibre OPDS Client** is a Calibre plugin that reads from an OPDS server and downloads the contents to a Calibre library.
+## Compatibility
 
-## :hammer_and_wrench: Installation
+- Calibre 6.0 or newer
+- Python 3 runtime bundled with Calibre
+- Qt 6 runtime bundled with Calibre
+- macOS, Windows, or Linux
 
-1. Ensure [Calibre](https://calibre-ebook.com/download) is installed on your machine and the [command line tools](https://manual.calibre-ebook.com/generated/en/cli-index.html) are available in your search path.
+Version 1.1.0 was tested with Calibre 6.3 on Apple Silicon macOS. Reports and pull requests for newer Calibre versions and other platforms are welcome.
 
-1. Install the plugin.
-    ```bash
-    cd calibre_plugin
-    calibre-customize -b .
-    ```
+## Installation
 
-1. Restart Calibre.
+1. Download `OPDS-Client-v1.1.0.zip` from the latest GitHub release. Do not extract it.
+2. Open Calibre.
+3. Select **Preferences → Plugins → Load plugin from file**.
+4. Choose the downloaded ZIP file and approve the third-party plugin warning.
+5. Restart Calibre.
+6. Open **Preferences → Toolbars & menus**.
+7. Choose **The main toolbar**.
+8. Select **OPDS Client** under **Available actions** and add it to **Current actions**.
+9. Select **Apply**, then **Close**.
 
-1. Add the plugin to the main toolbar.
-    1. Open the Preferences menu.
-    1. Under the `Interface` section, click on the button labeled `Toolbars & menus`.
-    1. Click the dropdown menu and select `The main toolbar`.
-    1. Select `OPDS Client` under `Available actions` on the left side.
-    1. Click the right arrow (`>`) to add it to the main toolbar.
-    1. Click `Apply`, then `Close` the Preferences menu.
+To display the button while an ereader is connected, repeat the toolbar steps for **The main toolbar when a device is connected**.
 
-## :computer: Usage
+## Quick test with Project Gutenberg
 
-### Download books from an external OPDS catalog
+Project Gutenberg publishes a legal public-domain OPDS catalog.
 
+1. Open **OPDS Client** from the Calibre toolbar.
+2. Enter this URL and press Return:
+
+   ```text
+   https://www.gutenberg.org/ebooks/search.opds/
+   ```
+
+3. Choose an item under **OPDS Catalog**.
+4. Select **Download OPDS**.
+5. Select a book and choose **Download selected books**.
+
+## Install from source
+
+Clone the repository and run Calibre's plugin builder from the plugin directory:
+
+```bash
+git clone https://github.com/sergeybruh/calibre-opds-client-modern.git
+cd calibre-opds-client-modern/calibre_plugin
+calibre-customize -b .
 ```
-https://standardebooks.org/opds
+
+On macOS, if `calibre-customize` is not in your shell path:
+
+```bash
+/Applications/calibre.app/Contents/MacOS/calibre-customize -b .
 ```
 
-### Replicate a book collection between two computers on a LAN
+Restart Calibre after installation.
 
-1.  In the calibre you wish to copy from (in this example called
-    calibre1.home.lan):
-    1.  Click Preferences
-    2.  In the "calibre - Preferences" dialog:
-        1.  Click "Sharing over the net"
-        2.  In the "calibre - Preferences - Sharing over the net"
-            dialog:
-            1.  Click the "Start Server" button
-            2.  Select the checkbox "Run server automatically when
-                calibre starts"
-            3.  Click the "Apply" button
-        3.  Click the "close" button
-2.  In the calibre you wish to copy to
-    1.  Install this plugin (see the "How do I install it?" section)
-    2.  Click the "OPDS client" button
-    3.  In the "OPDS client" dialog
-        1.  Edit the "OPDS URL" value, change
-            
-            ``` example
-            http://localhost:8080/opds
-            ```
-            
-            to
-            
-            ``` example
-            http://calibre1.home.lan:8080/opds
-            ```
-            
-            and then press the RETURN key on the keyboard
-        
-        2.  Click the "Download OPDS" button
-        
-        3.  Wait until the OPDS feed has finished loading (this may take
-            some time if there is a large number of books to load)
-            
-              - Note: if no books appear, try unchecking the "Hide books
-                already in the library" checkbox. If that makes a lot of
-                books appear, it means that the two calibre instances
-                have the same books
-        
-        4.  select the books you wish to copy into the current calibre
-            and click the "Download selected books"
-            
-              - calibre will start downloading and installing the books:
-                  - The Jobs counter in calibre's lower right corner,
-                    will show a decrementing number and the icon will
-                    spin
-                  - The book list will be updated as the books are
-                    downloaded
-        
-        5.  The downloaded books will be in approximately the same order
-            as in the original, but the time stamp will be the download
-            time. To fix the time stamp, click on the "Fix timestamps of
-            the selection" button
-            
-              - The updated timestamps may not show up immediately, but
-                they will show up after the first update of the display,
-                and the books will be ordered according to the timestamp
-                after stopping and starting calibre
+## What changed from the original
 
-## :balance_scale: License
+Version 1.1.0 adds compatibility with modern Calibre runtimes:
 
-This code is licensed under the GNU General Public License v3.0.
-For more details, please take a look at the [LICENSE](https://github.com/goodlibs/calibre-opds-client/blob/master/LICENSE) file.
+- Replaced the removed Python 2 `urllib2` and `urlparse` modules with Python 3 equivalents.
+- Replaced obsolete Qt enum access with Qt 6 scoped enums.
+- Replaced legacy `PyQt5` imports with Calibre's supported `qt.core` compatibility layer.
+- Raised the minimum supported Calibre version to 6.0.
 
-## :handshake: Contributing
+## Development
 
-Contributions are welcome!
-Please feel free to open an issue or submit a pull request.
+Run formatting and lint checks with:
+
+```bash
+python3 -m pip install tox
+tox -e black-check,flake8
+```
+
+Build and install locally with:
+
+```bash
+cd calibre_plugin
+calibre-customize -b .
+```
+
+## History and attribution
+
+This project is based on work by Steinar Bang and the `goodlibs/calibre-opds-client` fork. The original copyright notices remain in the source files and the Git history is preserved.
+
+## License
+
+Licensed under the [GNU General Public License v3.0](LICENSE). Modified versions must remain available under the same license when distributed.
+
+## Search keywords
+
+Calibre OPDS client, Calibre plugin, OPDS catalog browser, ebook downloader, EPUB library, Calibre-Web, Calibre Content Server, Python 3, Qt 6, macOS ebook reader, Windows ebook manager, Linux ebook library.

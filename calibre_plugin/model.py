@@ -8,10 +8,10 @@ __license__ = "GPL v3"
 import datetime
 import json
 import re
-import urllib2
-import urlparse
+from urllib import parse as urlparse
+from urllib import request as urllib2
 
-from PyQt5.Qt import QAbstractTableModel, QCoreApplication, Qt
+from qt.core import QAbstractTableModel, QCoreApplication, Qt
 
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.gui2 import error_dialog
@@ -31,9 +31,9 @@ class OpdsBooksModel(QAbstractTableModel):
         self.filterBooks()
 
     def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole:
+        if role != Qt.ItemDataRole.DisplayRole:
             return None
-        if orientation == Qt.Vertical:
+        if orientation == Qt.Orientation.Vertical:
             return section + 1
         if section >= len(self.column_headers):
             return None
@@ -50,17 +50,17 @@ class OpdsBooksModel(QAbstractTableModel):
         if row >= len(self.filteredBooks):
             return None
         opdsBook = self.filteredBooks[row]
-        if role == Qt.UserRole:
+        if role == Qt.ItemDataRole.UserRole:
             # Return the Metadata object underlying each row
             return opdsBook
-        if role != Qt.DisplayRole:
+        if role != Qt.ItemDataRole.DisplayRole:
             return None
         if col >= self.booktableColumnCount:
             return None
         if col == 0:
             return opdsBook.title
         if col == 1:
-            return u" & ".join(opdsBook.author)
+            return " & ".join(opdsBook.author)
         if col == 2:
             if opdsBook.timestamp is not None:
                 return opdsBook.timestamp.strftime("%Y-%m-%d %H:%M:%S")
@@ -132,7 +132,7 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def isFilteredNews(self, book):
         if self.filterBooksThatAreNewspapers:
-            if u"News" in book.tags:
+            if "News" in book.tags:
                 return True
         return False
 
@@ -149,21 +149,21 @@ class OpdsBooksModel(QAbstractTableModel):
         return metadatalist
 
     def opdsToMetadata(self, opdsBookStructure):
-        authors = opdsBookStructure.author.replace(u"& ", u"&")
-        metadata = Metadata(opdsBookStructure.title, authors.split(u"&"))
+        authors = opdsBookStructure.author.replace("& ", "&")
+        metadata = Metadata(opdsBookStructure.title, authors.split("&"))
         metadata.uuid = opdsBookStructure.id.replace("urn:uuid:", "", 1)
         rawTimestamp = opdsBookStructure.updated
         parsableTimestamp = re.sub(r"((\.[0-9]+)?\+00:00|Z)$", "", rawTimestamp)
         metadata.timestamp = datetime.datetime.strptime(parsableTimestamp, "%Y-%m-%dT%H:%M:%S")
         tags = []
-        summary = opdsBookStructure.get(u"summary", u"")
+        summary = opdsBookStructure.get("summary", "")
         summarylines = summary.splitlines()
         for summaryline in summarylines:
-            if summaryline.startswith(u"TAGS: "):
-                tagsline = summaryline.replace(u"TAGS: ", u"")
-                tagsline = tagsline.replace(u"<br />", u"")
-                tagsline = tagsline.replace(u", ", u",")
-                tags = tagsline.split(u",")
+            if summaryline.startswith("TAGS: "):
+                tagsline = summaryline.replace("TAGS: ", "")
+                tagsline = tagsline.replace("<br />", "")
+                tagsline = tagsline.replace(", ", ",")
+                tags = tagsline.split(",")
         metadata.tags = tags
         bookDownloadUrls = []
         links = opdsBookStructure.get("links", [])
@@ -183,7 +183,7 @@ class OpdsBooksModel(QAbstractTableModel):
 
     def findNextUrl(self, feed):
         for link in feed.links:
-            if link.rel == u"next":
+            if link.rel == "next":
                 return link.href
         return None
 

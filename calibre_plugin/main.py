@@ -8,7 +8,7 @@ __license__ = "GPL v3"
 
 import datetime
 
-from PyQt5.Qt import (
+from qt.core import (
     QAbstractItemView,
     QCheckBox,
     QComboBox,
@@ -47,7 +47,7 @@ class OpdsDialog(QDialog):
         # The model for the book list
         self.model = OpdsBooksModel(None, self.dummy_books(), self.db)
         self.searchproxymodel = QSortFilterProxyModel(self)
-        self.searchproxymodel.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.searchproxymodel.setFilterCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.searchproxymodel.setFilterKeyColumn(-1)
         self.searchproxymodel.setSourceModel(self.model)
 
@@ -68,7 +68,7 @@ class OpdsDialog(QDialog):
         self.opdsUrlEditor.activated.connect(self.opdsUrlEditorActivated)
         self.opdsUrlEditor.addItems(prefs["opds_url"])
         self.opdsUrlEditor.setEditable(True)
-        self.opdsUrlEditor.setInsertPolicy(QComboBox.InsertAtTop)
+        self.opdsUrlEditor.setInsertPolicy(QComboBox.InsertPolicy.InsertAtTop)
         self.layout.addWidget(self.opdsUrlEditor, 0, 1, 1, 3)
         self.opdsUrlLabel.setBuddy(self.opdsUrlEditor)
 
@@ -127,10 +127,10 @@ class OpdsDialog(QDialog):
         self.library_view = QTableView(self)
         self.library_view.setAlternatingRowColors(True)
         self.library_view.setModel(self.searchproxymodel)
-        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
-        self.library_view.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.library_view.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.library_view.resizeColumnsToContents()
         self.layout.addWidget(self.library_view, 3, 0, 3, buttonColumnNumber + 1)
@@ -215,9 +215,9 @@ class OpdsDialog(QDialog):
         self.model.downloadOpdsCatalog(self.gui, opdsCatalogUrl)
         if self.model.isCalibreOpdsServer():
             self.model.downloadMetadataUsingCalibreRestApi(self.opdsUrlEditor.currentText())
-        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.library_view.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         self.resizeAllLibraryViewLinesToHeaderHeight()
         self.resize(self.sizeHint())
 
@@ -229,7 +229,7 @@ class OpdsDialog(QDialog):
         if selectionmodel.hasSelection():
             rows = selectionmodel.selectedRows()
             for row in reversed(rows):
-                book = row.data(Qt.UserRole)
+                book = row.data(Qt.ItemDataRole.UserRole)
                 self.downloadBook(book)
 
     def downloadBook(self, book):
@@ -241,7 +241,7 @@ class OpdsDialog(QDialog):
         if selectionmodel.hasSelection():
             rows = selectionmodel.selectedRows()
             for row in reversed(rows):
-                book = row.data(Qt.UserRole)
+                book = row.data(Qt.ItemDataRole.UserRole)
                 self.fixBookTimestamp(book)
 
     def fixBookTimestamp(self, book):
