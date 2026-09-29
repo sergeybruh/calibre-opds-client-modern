@@ -30,6 +30,7 @@ jobs:
         tox -e flake8,black-check
     - name: Build and install plugin
       run: |
+        sudo apt-get update && sudo apt-get install -y libegl1 libopengl0 libxcb-cursor0 libfontconfig1
         sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
         cd calibre_plugin
         calibre-customize -b .
