@@ -5,9 +5,9 @@ __copyright__ = "Steinar Bang, 2015"
 __credits__ = ["Steinar Bang"]
 __license__ = "GPL v3"
 
-from qt.core import QCheckBox, QComboBox, QGridLayout, QLabel, QWidget
-
 from calibre.utils.config import JSONConfig
+
+from qt.core import QCheckBox, QComboBox, QGridLayout, QLabel, QWidget
 
 prefs = JSONConfig("plugins/opds_client")
 

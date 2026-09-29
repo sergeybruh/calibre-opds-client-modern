@@ -11,11 +11,11 @@ import re
 from urllib import parse as urlparse
 from urllib import request as urllib2
 
-from qt.core import QAbstractTableModel, QCoreApplication, Qt
-
 from calibre.ebooks.metadata.book.base import Metadata
 from calibre.gui2 import error_dialog
 from calibre.web.feeds import feedparser
+
+from qt.core import QAbstractTableModel, QCoreApplication, Qt
 
 
 class OpdsBooksModel(QAbstractTableModel):

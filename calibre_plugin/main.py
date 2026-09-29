@@ -8,6 +8,12 @@ __license__ = "GPL v3"
 
 import datetime
 
+from calibre.ebooks.metadata.book.base import Metadata
+
+from calibre_plugins.opds_client import config
+from calibre_plugins.opds_client.config import prefs
+from calibre_plugins.opds_client.model import OpdsBooksModel
+
 from qt.core import (
     QAbstractItemView,
     QCheckBox,
@@ -24,12 +30,6 @@ from qt.core import (
     QTableView,
     Qt,
 )
-
-from calibre.ebooks.metadata.book.base import Metadata
-
-from calibre_plugins.opds_client import config
-from calibre_plugins.opds_client.config import prefs
-from calibre_plugins.opds_client.model import OpdsBooksModel
 
 
 class DynamicBook(dict):
